@@ -1,0 +1,25 @@
+{
+    "name": "px",
+    "version": "0.1.0",
+    "authors": [
+        "predix experience developers"
+    ],
+    "description": "Predix Experience js library",
+    "main": "dist/px.min.js",
+    "keywords": [
+        "px",
+        "predix",
+        "predix",
+        "experience"
+    ],
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "test-target"
+    ],
+    "license": "GE",
+    "homepage": "predix.io"
+
+}
