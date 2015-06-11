@@ -13,6 +13,7 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             //App src files
+            "bower_components/es6-promise/dist/es6-promise.min.js",
             {pattern: 'src/*.js'},
             {pattern: 'test/*-spec.js'}
         ],
@@ -20,12 +21,12 @@ module.exports = function(config) {
         // list of files / patterns to exclude
         exclude: [
             'test/e2e/*.js',
-            'public/bower_components/**/*-spec.*'
+            'bower_components/**/*-spec.*'
         ],
         plugins: [
             // these plugins will be require() by Karma
             'karma-coverage',
-            'karma-jasmine',,
+            'karma-jasmine',
             'karma-junit-reporter',
             'karma-chrome-launcher',
             'karma-script-launcher',
