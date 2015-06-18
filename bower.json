@@ -20,7 +20,7 @@
     "test-target"
   ],
   "devDependencies": {
-    "es6-promise": "git://github.com/jakearchibald/es6-promise.git"
+    "es6-promise": "https://github.com/jakearchibald/es6-promise.git"
   },
   "license": "GE",
   "homepage": "predix.io"
