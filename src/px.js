@@ -121,6 +121,10 @@ getDeck: function (url) {
         transform: transform
     };
 
+    window.addEventListener('px-deck-ready', function(e){
+        e.target.init();
+    });
+
     //angular implementation pf px-dealer
     window.px.dealer = {
         getData: function (url) {
