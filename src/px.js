@@ -1,9 +1,9 @@
 /**
-px.dealer Object providing API for dealer
+ px.dealer Object providing API for dealer
 
-#### Usage
-```
-var deckDefinition = {
+ #### Usage
+ ```
+ var deckDefinition = {
     'sample-cards': {
     name: 'SampleCards',
     url: 'views/sample-cards.html'
@@ -18,7 +18,7 @@ var deckDefinition = {
     }
     };
 
-var decksByClassification = {
+ var decksByClassification = {
     'dashboard1': {
     '/classification/country': ['sample-cards', 'fetch-data'],
     '/classification/state': ['card-to-card'],
@@ -31,9 +31,9 @@ var decksByClassification = {
     }
     };
 
-window.px.dealer.init(deckDefinition, decksByClassification);
+ window.px.dealer.init(deckDefinition, decksByClassification);
 
-$scope.$apply(function () {
+ $scope.$apply(function () {
 
     $scope.context = {
         name: 'newContextName'
@@ -48,32 +48,32 @@ $scope.$apply(function () {
     });
     });
 
-```
+ ```
 
-#### px.dealer api
+ #### px.dealer api
 
-##### methods
+ ##### methods
 
-```
-getData: function (url) {
+ ```
+ getData: function (url) {
     //get data from web resources by url
     },
-```
-```
-init: function (deckDefinitions, decksByClassifications) {
+ ```
+ ```
+ init: function (deckDefinitions, decksByClassifications) {
     //instantiate the dealer by setting up deck definition and deckByClassification for getDecksByClassification look up
     },
-```
-```
-getDecksByClassification: function (dashboardId, classification) {
+ ```
+ ```
+ getDecksByClassification: function (dashboardId, classification) {
     //get a list of decks by dashboard Id and classification
     },
-```
-```
-getDeck: function (url) {
+ ```
+ ```
+ getDeck: function (url) {
     //get the deck markup by url
     }
-```
+ ```
  **/
 
 
@@ -121,19 +121,24 @@ getDeck: function (url) {
         transform: transform
     };
 
-    window.addEventListener('px-deck-ready', function(e){
+    window.addEventListener('px-deck-ready', function (e) {
         e.target.init();
     });
 
     //angular implementation pf px-dealer
     window.px.dealer = {
-        getData: function (url) {
+        getData: function (url, httpConfig) {
             if (window.angular) {
+
+                if (httpConfig === null || typeof httpConfig !== 'object') {
+                    httpConfig = {};
+                }
+
                 //throw 'angular is missing';
                 var $http = angular.element('body').injector().get("$http");
 
                 return new Promise(function (resolve, reject) {
-                    $http.get(url).
+                    $http.get(url, httpConfig).
                         success(function (data, status, headers, config) {
                             resolve(data);
                         }).
