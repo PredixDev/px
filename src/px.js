@@ -138,13 +138,23 @@
                 var $http = angular.element('body').injector().get("$http");
 
                 return new Promise(function (resolve, reject) {
-                    $http.get(url, httpConfig).
-                        success(function (data, status, headers, config) {
-                            resolve(data);
-                        }).
-                        error(function (data, status, headers, config) {
-                            reject(data);
-                        });
+                    var successCallback = function (data, status, headers, config) {
+                        resolve(data);
+                    };
+                    var errorCallback = function (data, status, headers, config) {
+                        reject(data);
+                    };
+                    // check url for JSONP callback
+                    if(/callback=/.test(url)) {
+                      $http.jsonp(url, httpConfig)
+                        .success(successCallback)
+                        .error(errorCallback);
+                    } else {
+                      $http.get(url, httpConfig)
+                        .success(successCallback)
+                        .error(errorCallback);
+                    }
+
                 });
             }
         },
@@ -181,5 +191,3 @@
 
 
 })();
-    
-
