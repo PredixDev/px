@@ -125,8 +125,29 @@
         e.target.init();
     });
 
-    //angular implementation pf px-dealer
+    //angular implementation of px-dealer
     window.px.dealer = {
+        /**
+         * set http provider for px-dealer, useful for injecting $http during unit test with angular
+         * @param httpProvider
+         */
+        setHttpProvider: function(httpProvider){
+           this.httpProvider = httpProvider;
+        },
+        /**
+         * get the $http Object set in the setHttpProvider or return angular.element('body').injector().get('$http'); by default
+         * @returns {http Object}
+         */
+        getHttpProvider: function(){
+            var $http = null;
+            if (this.httpProvider){
+                return this.httpProvider;
+            }
+            if (window.angular){
+                $http = angular.element('body').injector().get('$http');
+            }
+            return $http;
+        },
         getData: function (url, httpConfig) {
             if (httpConfig === null || typeof httpConfig !== 'object') {
                 httpConfig = {};
@@ -142,9 +163,8 @@
             return this.httpRequest(httpConfig);
         },
         httpRequest: function (httpConfig) {
-            if (window.angular) {
-                var $http = angular.element('body').injector().get("$http");
-
+            var $http = this.getHttpProvider();
+            if ($http) {
                 return new Promise(function (resolve, reject) {
                     var successCallback = function (data) {
                         resolve(data);
@@ -152,7 +172,6 @@
                     var errorCallback = function (data) {
                         reject(data);
                     };
-
                     $http(httpConfig)
                         .success(successCallback)
                         .error(errorCallback);
