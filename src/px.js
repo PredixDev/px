@@ -128,33 +128,34 @@
     //angular implementation pf px-dealer
     window.px.dealer = {
         getData: function (url, httpConfig) {
+            if (httpConfig === null || typeof httpConfig !== 'object') {
+                httpConfig = {};
+            }
+            // check url for JSONP callback
+            if (/callback=/.test(url)) {
+                httpConfig.method = 'JSONP';
+
+            } else {
+                httpConfig.method = 'GET';
+            }
+            httpConfig.url = url;
+            return this.httpRequest(httpConfig);
+        },
+        httpRequest: function (httpConfig) {
             if (window.angular) {
-
-                if (httpConfig === null || typeof httpConfig !== 'object') {
-                    httpConfig = {};
-                }
-
-                //throw 'angular is missing';
                 var $http = angular.element('body').injector().get("$http");
 
                 return new Promise(function (resolve, reject) {
-                    var successCallback = function (data, status, headers, config) {
+                    var successCallback = function (data) {
                         resolve(data);
                     };
-                    var errorCallback = function (data, status, headers, config) {
+                    var errorCallback = function (data) {
                         reject(data);
                     };
-                    // check url for JSONP callback
-                    if(/callback=/.test(url)) {
-                      $http.jsonp(url, httpConfig)
-                        .success(successCallback)
-                        .error(errorCallback);
-                    } else {
-                      $http.get(url, httpConfig)
-                        .success(successCallback)
-                        .error(errorCallback);
-                    }
 
+                    $http(httpConfig)
+                        .success(successCallback)
+                        .error(errorCallback);
                 });
             }
         },
