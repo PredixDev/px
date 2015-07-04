@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  px.dealer Object providing API for dealer
 
