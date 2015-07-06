@@ -14,6 +14,9 @@ module.exports = function(config) {
         files: [
             //App src files
             "bower_components/es6-promise/dist/es6-promise.min.js",
+            "bower_components/jquery/dist/jquery.js",
+            "bower_components/angular/angular.js",
+            "bower_components/angular-mocks/angular-mocks.js",
             {pattern: 'src/*.js'},
             {pattern: 'test/*-spec.js'}
         ],

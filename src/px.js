@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  px.dealer Object providing API for dealer
 
@@ -125,36 +127,56 @@
         e.target.init();
     });
 
-    //angular implementation pf px-dealer
+    //angular implementation of px-dealer
     window.px.dealer = {
+        /**
+         * set http provider for px-dealer, useful for injecting $http during unit test with angular
+         * @param httpProvider
+         */
+        setHttpProvider: function(httpProvider){
+           this.httpProvider = httpProvider;
+        },
+        /**
+         * get the $http Object set in the setHttpProvider or return angular.element('body').injector().get('$http'); by default
+         * @returns {http Object}
+         */
+        getHttpProvider: function(){
+            var $http = null;
+            if (this.httpProvider){
+                return this.httpProvider;
+            }
+            if (window.angular){
+                $http = angular.element('body').injector().get('$http');
+            }
+            return $http;
+        },
         getData: function (url, httpConfig) {
-            if (window.angular) {
+            if (httpConfig === null || typeof httpConfig !== 'object') {
+                httpConfig = {};
+            }
+            // check url for JSONP callback
+            if (/callback=/.test(url)) {
+                httpConfig.method = 'JSONP';
 
-                if (httpConfig === null || typeof httpConfig !== 'object') {
-                    httpConfig = {};
-                }
-
-                //throw 'angular is missing';
-                var $http = angular.element('body').injector().get("$http");
-
+            } else {
+                httpConfig.method = 'GET';
+            }
+            httpConfig.url = url;
+            return this.httpRequest(httpConfig);
+        },
+        httpRequest: function (httpConfig) {
+            var $http = this.getHttpProvider();
+            if ($http) {
                 return new Promise(function (resolve, reject) {
-                    var successCallback = function (data, status, headers, config) {
+                    var successCallback = function (data) {
                         resolve(data);
                     };
-                    var errorCallback = function (data, status, headers, config) {
+                    var errorCallback = function (data) {
                         reject(data);
                     };
-                    // check url for JSONP callback
-                    if(/callback=/.test(url)) {
-                      $http.jsonp(url, httpConfig)
+                    $http(httpConfig)
                         .success(successCallback)
                         .error(errorCallback);
-                    } else {
-                      $http.get(url, httpConfig)
-                        .success(successCallback)
-                        .error(errorCallback);
-                    }
-
                 });
             }
         },
