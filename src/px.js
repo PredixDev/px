@@ -206,10 +206,19 @@
                 resolve(decks);
             });
         },
+
         getDeck: function (url) {
             return this.getData(url);
         }
+
     };
 
+    window.px.isInt = function (n) {
+        return Number(n) === n && n % 1 === 0;
+    };
+
+    window.px.isFloat = function (n) {
+        return n === Number(n) && n % 1 !== 0;
+    };
 
 })();
