@@ -221,4 +221,18 @@
         return n === Number(n) && n % 1 !== 0;
     };
 
+    window.px.convertPropertyToAttributeName = function(propertyName){
+        // Separate camel-cased words with a space for later processing.
+        var attrName = propertyName.replace(/[A-Z]/g, function (s) {
+            return " " + s;
+        });
+        attrName = attrName.toLowerCase();
+        attrName = attrName.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+            .replace(/\s+/g, '-') // collapse whitespace and replace by -
+            .replace(/-+/g, '-'); // collapse dashes
+        // Trim leading and trailing whitespace and dashes.
+        attrName = attrName.replace(/^[\s|-]+|[\s|-]+$/g, '');
+        return attrName;
+    };
+
 })();
