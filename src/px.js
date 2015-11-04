@@ -225,5 +225,11 @@
         return Object.prototype.toString.call(arg) === '[object Array]';
     };
 
-
+    window.px.slugify = function(propName){
+        var noCapitals = propName.replace(/([a-z])([A-Z])/g, '$1 $2');
+        var allLowercase = noCapitals.toLowerCase();
+        var attributeName = allLowercase.replace(/\s/g, '-');
+        return attributeName;
+    };
+    
 })();
