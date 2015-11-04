@@ -221,4 +221,9 @@
         return n === Number(n) && n % 1 !== 0;
     };
 
+    window.px.isArray = function(arg) {
+        return Object.prototype.toString.call(arg) === '[object Array]';
+    };
+
+
 })();
