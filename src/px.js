@@ -84,7 +84,7 @@
     window.px = window.px || {};
 
     function makePoint(item) {
-        if (item && item.length === 2) {
+        if (item && item.length >= 2) {
             return {x: item[0], y: item[1]};
         }
         throw new Error('Invalid time series point format');
@@ -122,6 +122,67 @@
     window.px.timeseries.adapter.kairosdb = {
         transform: transform
     };
+
+    window.px.timeseries.dataTransformer = function(option){
+        this.option = {
+            getSeriesName: function (tagname, groups) {
+                var groupName = "";
+                if (groups && groups.constructor === Array) {
+                    groups.forEach(function (group) {
+                        groupName = groupName + '_' + group.name;
+
+                        if (group.values && group.values.constructor === Array) {
+                            group.values.forEach(function (value) {
+                                groupName = groupName + '_' + value;
+                            });
+                        }
+
+                    });
+                }
+                return tagname + groupName;
+            }
+        };
+
+        //overwrite default
+        if (option && option.getSeriesName && typeof option.getSeriesName === 'function'){
+            this.option.getSeriesName = option.getSeriesName;
+        }
+    };
+
+    window.px.timeseries.dataTransformer.prototype.transform = function (tags) {
+        if (tags && tags.constructor === Array) {
+            var result = [];
+            var self = this;
+            tags.forEach(function (tag) {
+                if (tag.name && tag.results && tag.results.constructor === Array) {
+
+                    //add tag name
+                    tag.results.map(self.makeSeries).forEach(function(series){
+                        series.name = self.option.getSeriesName(tag.name, series._groups);
+                        delete series._groups;
+                        result = result.concat(series);
+                    });
+                }
+                else {
+                    throw new Error('Invalid time series data format');
+                }
+            });
+            return result;
+        }
+        throw new Error('Invalid time series data format');
+    };
+
+    window.px.timeseries.dataTransformer.prototype.makeSeries = function(result) {
+        if (result.datapoints && result.datapoints.constructor === Array) {
+            var data = result.datapoints.map(makePoint);
+            return {_groups: result.groups, data: data};
+        }
+        throw new Error('Invalid time series data format');
+    };
+
+
+
+
 
     window.addEventListener('px-deck-ready', function (e) {
         e.target.init();
