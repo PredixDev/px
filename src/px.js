@@ -256,9 +256,6 @@
                         if (self.deckDefinitions[deckId]) {
                             decks.push(self.deckDefinitions[deckId]);
                         }
-//                        else {
-//                            console.error('could not find deck definition for', deckId);
-//                        }
                     });
                 }
             }
