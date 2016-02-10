@@ -28,6 +28,7 @@
         "karma-spec-reporter": "0.0.13",
         "load-grunt-tasks": "~0.2.0",
         "open": "0.0.4",
-        "phantomjs": "1.9.7-15"
+        "phantomjs": "1.9.7-15",
+        "grunt-insert": "^0.1.0"
     }
 }

@@ -165,11 +165,37 @@ module.exports = function(grunt) {
                 src: '<%= config.src %>/*.js',
                 dest: '<%= config.dist %>/<%= pkg.name %>.min.js'
             }
+        },
+
+        insert: {
+          insertpxjs:{
+            src: "dist/px.min.js",
+            dest: "dist/px-library.html",
+            match: "!!px.js script goes here!!"
+          }
+        },
+
+        copy: {
+          copypxtemplate: {
+            src: "src/_px-library.html",
+            dest: "dist/px-library.html"
+          }
         }
+
     });
+
+    grunt.loadNpmTasks('grunt-insert');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('dist', ['clean:build', 'jshint:src', 'uglify']);
     grunt.registerTask('test', ['jshint:test', 'clean:test', 'karma']);
-    //grunt.registerTask('docs', ['dist', 'ngdocs', 'connect:docs']);
-    grunt.registerTask('default', ['test', 'dist']);
+
+    // Default task.
+    grunt.registerTask('default', 'Basic build', [
+      'test',
+      'dist',
+      'copy',
+      'insert'
+    ]);
+
 };
