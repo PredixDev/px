@@ -1,6 +1,6 @@
 {
   "name": "px",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "authors": [
     "predix experience developers"
   ],
@@ -17,7 +17,8 @@
     "node_modules",
     "bower_components",
     "test",
-    "test-target"
+    "test-target",
+    "OSS_Notice.pdf"
   ],
   "devDependencies": {
     "es6-promise": "https://github.com/jakearchibald/es6-promise.git",
