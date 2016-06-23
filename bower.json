@@ -1,6 +1,6 @@
 {
   "name": "px",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "authors": [
     "predix experience developers"
   ],
@@ -20,7 +20,7 @@
     "test-target"
   ],
   "devDependencies": {
-    "es6-promise": "https://github.com/jakearchibald/es6-promise.git",
+    "es6-promise": "3.2.2",
     "angular": "~1.3.16",
     "angular-mocks": "~1.3.16",
     "jquery": "2.1.3"
