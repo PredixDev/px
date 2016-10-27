@@ -207,7 +207,7 @@
                 return this.httpProvider;
             }
             if (window.angular){
-                $http = angular.element('body').injector().get('$http');
+                $http = angular.element('.ng-scope').injector().get('$http');
             }
             return $http;
         },
