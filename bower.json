@@ -13,6 +13,7 @@
     "experience"
   ],
   "ignore": [
+    "*.enc",
     "**/.*",
     "node_modules",
     "bower_components",
